@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/|version|/phpunit.xsd"
-         bootstrap="/opt/indieweb/src/vendor/autoload.php">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/|version|/phpunit.xsd" bootstrap="/opt/indieweb/src/vendor/autoload.php">
     <testsuites>
         <testsuite name="unit">
             <directory>.</directory>
         </testsuite>
-
     </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">../src</directory>
+        </include>
+        <exclude>
+            <directory>../src/vendor</directory>
+            <directory>../src/public</directory>
+            <directory>../src/bin</directory>
+            <directory>../src/lib</directory>
+        </exclude>
+    </source>
+    <coverage includeUncoveredFiles="true" pathCoverage="false" ignoreDeprecatedCodeUnits="true" disableCodeCoverageIgnore="true">
+        <report>
+            <clover outputFile="clover.xml"/>
+            <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/>
+        </report>
+    </coverage>
 </phpunit>
