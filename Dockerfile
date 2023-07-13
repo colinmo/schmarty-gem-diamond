@@ -23,6 +23,7 @@ RUN echo "alias phpunit=/opt/indieweb/src/vendor/bin/phpunit" >> /home/indieweb/
 RUN chsh -s /bin/bash
 USER indieweb
 ENV SHELL=/bin/bash
+ENV PATH /opt/indieweb/src/vendor/bin:$PATH
 ## TESTING CONFIG
 # PHPLint
 RUN composer global require overtrue/phplint \

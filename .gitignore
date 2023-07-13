@@ -1,3 +1,6 @@
 vendor
 /lib/config.php
 /micropubkit
+html-coverage
+testdb.sqlite3
+clover.xml

@@ -15,28 +15,46 @@ final class SiteTest extends TestCase
         unlink($dbfile);
         touch($dbfile);
         $this->db = new DB($dbfile);
-        $sql = "CREATE TABLE Sites (url TEXT PRIMARY KEY, active INTEGER, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP, profile text);
-        CREATE TABLE SiteChecks (url TEXT KEY, datetime TEXT DEFAULT CURRENT_TIMESTAMP, result TEXT);
+        $sql = "CREATE TABLE Sites (
+            url TEXT PRIMARY KEY,
+            active INTEGER,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            profile text,
+            next TEXT,
+            previous TEXT);
+        CREATE TABLE SiteChecks (
+            url TEXT KEY,
+            datetime TEXT DEFAULT CURRENT_TIMESTAMP,
+            result TEXT
+        );
         INSERT INTO Sites VALUES (
             'https://vonexplaino.com/',
             1,
             '2001-01-01 00:00:00',
-            'Dude');
+            'Dude',
+            'https://grift.com/',
+            'https://lapse.nerdvana.org.au');
         INSERT INTO Sites VALUES (
             'https://lapse.nerdvana.org.au/',
             1,
             '2002-01-01 00:00:00',
-            'Dude');
+            'Dude',
+            'https://vonexplaino.com/',
+            'https://grift.com/');
         INSERT INTO Sites values (
             'https://no.com/',
             0,
             '2002-05-05 00:00:00',
-            'Dude');
+            'Dude',
+            '',
+            '');
         INSERT INTO Sites VALUES (
             'https://grift.com/',
             1,
             '2003-01-01 00:00:00',
-            'Dude');";
+            'Dude',
+            'https://lapse.nerdvana.org.au/',
+            'https://vonexplaino.com/');";
         $this->db->getInstance()->exec($sql);
     }
     public function testRandomGetsResult(): void
@@ -56,7 +74,7 @@ final class SiteTest extends TestCase
         $one = $site->previousActive('https://lapse.nerdvana.org.au/index.html');
         $this->assertIsArray($one);
         $this->assertArrayHasKey('url', $one);
-        $this->assertEquals($one['url'], 'https://vonexplaino.com/');
+        $this->assertEquals($one['url'], 'https://grift.com/');
     }
 
     public function testNextGetsResult(): void
@@ -68,11 +86,26 @@ final class SiteTest extends TestCase
         $one = $site->nextActive('https://lapse.nerdvana.org.au/index.html');
         $this->assertIsArray($one);
         $this->assertArrayHasKey('url', $one);
-        $this->assertEquals($one['url'], 'https://grift.com/');
+        $this->assertEquals($one['url'], 'https://vonexplaino.com/');
         
         $one = $site->nextActive('https://vonexplaino.com/bob/builder');
         $this->assertIsArray($one);
         $this->assertArrayHasKey('url', $one);
-        $this->assertEquals($one['url'], 'https://lapse.nerdvana.org.au/');
+        $this->assertEquals($one['url'], 'https://grift.com/');
+    }
+
+    public function testsAddSiteSlotsIn(): void
+    {
+        $site = new App\Model\Site(
+            $this->db
+        );
+        $bob = $site->getActiveSitesWithProfiles();
+        $this->assertSame(count($bob), 3);
+        $site->getSite('https://why.here.com', true);
+        $bob = $site->getActiveSitesWithProfiles();
+        $this->assertSame(count($bob), 3);
+        $site->setProfile('https://why.here.com', 'Profile stuff');
+        $bob = $site->getActiveSitesWithProfiles();
+        $this->assertSame(count($bob), 4);
     }
 }
