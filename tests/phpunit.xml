@@ -16,10 +16,19 @@
             <directory>../src/lib</directory>
         </exclude>
     </source>
+    <logging>
+        <junit outputFile="junit.xml" />
+        <testdoxHtml outputFile="testdox.html" />
+    </logging>
     <coverage includeUncoveredFiles="true" pathCoverage="false" ignoreDeprecatedCodeUnits="true" disableCodeCoverageIgnore="true">
         <report>
             <clover outputFile="clover.xml"/>
             <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/>
         </report>
     </coverage>
+    <php>
+        <ini name="display_errors" value="On" />
+        <ini name="display_startup_errors" value="On" />
+        <ini name="error_reporting" value="E_ALL | E_STRICT" />
+    </php>
 </phpunit>

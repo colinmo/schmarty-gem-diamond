@@ -14,7 +14,10 @@ RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini \
 # PCOV for Code Coverage
 RUN pecl install pcov \
     && docker-php-ext-enable pcov \
-    && echo "pcov.directory = /opt/indieweb/src" > /usr/local/etc/php/conf.d/10-pcov.ini
+    && echo "pcov.directory = /opt/indieweb/src" > /usr/local/etc/php/conf.d/10-pcov.ini \
+    && echo "error_reporting = E_ALL | E_STRICT" > /usr/local/etc/php/conf.d/11-errors.ini \
+    && echo "display_errors = On" >> /usr/local/etc/php/conf.d/11-errors.ini \
+    && echo "display_startup_errors = On" >>/usr/local/etc/php/conf.d/11-errors.ini
 # PHPUnit
 RUN echo "alias phpunit=/opt/indieweb/src/vendor/bin/phpunit" >> /home/indieweb/.bashrc
 ##

@@ -57,12 +57,16 @@ final class SiteTest extends TestCase
             'https://vonexplaino.com/');";
         $this->db->getInstance()->exec($sql);
     }
+    protected function tearDown(): void
+    {
+        unlink("/opt/indieweb/tests/fixtures/testdb.sqlite3");
+    }
     public function testRandomGetsResult(): void
     {
         $site = new App\Model\Site(
             $this->db
         );
-                $one = $site->randomActive();
+        $one = $site->randomActive();
         $this->assertArrayHasKey('url', $one);
     }
     public function testPreviousGetsResult(): void
@@ -87,7 +91,7 @@ final class SiteTest extends TestCase
         $this->assertIsArray($one);
         $this->assertArrayHasKey('url', $one);
         $this->assertEquals($one['url'], 'https://vonexplaino.com/');
-        
+
         $one = $site->nextActive('https://vonexplaino.com/bob/builder');
         $this->assertIsArray($one);
         $this->assertArrayHasKey('url', $one);
@@ -107,5 +111,35 @@ final class SiteTest extends TestCase
         $site->setProfile('https://why.here.com', 'Profile stuff');
         $bob = $site->getActiveSitesWithProfiles();
         $this->assertSame(count($bob), 4);
+        $bob = $site->all();
+        $this->assertSame(count($bob), 5);
+    }
+
+    public function testNonexistantSite(): void
+    {
+        $site = new App\Model\Site($this->db);
+        $result = $site->getSite('https://why.here.com', false);
+        $this->assertSame(false, $result);
+    }
+
+    public function testExistantSite(): void
+    {
+        $site = new App\Model\Site($this->db);
+        $result = $site->getSite('https://vonexplaino.com/', false);
+        $this->assertSame($result['url'], 'https://vonexplaino.com/');
+    }
+
+    public function testNonexistantPrevious(): void
+    {
+        $site = new App\Model\Site($this->db);
+        $result = $site->previousActive('https://why.here.com');
+        $this->assertSame($result, ['url' => '/']);
+    }
+
+    public function testNonexistantNext(): void
+    {
+        $site = new App\Model\Site($this->db);
+        $result = $site->nextActive('https://why.here.com');
+        $this->assertSame($result, ['url' => '/']);
     }
 }

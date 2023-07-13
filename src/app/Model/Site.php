@@ -32,32 +32,38 @@ class Site
         return $this->addSite($url);
     }
 
-    public function randomActive()
+    public function randomActive(): array
     {
         // fetch it from the DB
         $query = $this->db->prepare('SELECT * from Sites WHERE active = 1 ORDER BY RANDOM() LIMIT 1');
         if ($query->execute()) {
             return $query->fetch();
         }
-        return '/';
+        return ['url' => '/'];
     }
 
-    public function previousActive(string $referrer)
+    public function previousActive(string $referrer): array
     {
-        $query = $this->db->prepare("SELECT previous as url from Sites WHERE :referrer like url||'%' ORDER BY length(url) LIMIT 1");
+        $query = $this->db->prepare("SELECT previous as url from Sites WHERE :referrer like url||'%' AND active = 1 ORDER BY length(url) LIMIT 1");
         if ($query->execute([$referrer])) {
-            return $query->fetch();
+            $return = $query->fetch();
+            if ($return) {
+                return $return;
+            }
         }
-        return '/';
+        return ['url' => '/'];
     }
 
-    public function nextActive(string $referrer)
+    public function nextActive(string $referrer): mixed
     {
-        $query = $this->db->prepare("SELECT next as url from Sites WHERE :referrer like url||'%' ORDER BY length(url) LIMIT 1");
+        $query = $this->db->prepare("SELECT next as url from Sites WHERE :referrer like url||'%' AND active = 1 ORDER BY length(url) LIMIT 1");
         if ($query->execute([$referrer])) {
-            return $query->fetch();
+            $return = $query->fetch();
+            if ($return) {
+                return $return;
+            }
         }
-        return '/';
+        return ['url' => '/'];
     }
 
     public function all()
@@ -117,7 +123,6 @@ class Site
         $query->execute([$url, $target['url']]);
         $query = $this->db->prepare('UPDATE sites SET previous = :url WHERE url = :orig');
         $query->execute([$url, $target['next']]);
-        $this->db->commit();
-        return true;
+        return $this->db->commit();
     }
 }
