@@ -54,7 +54,15 @@ final class SiteTest extends TestCase
             '2003-01-01 00:00:00',
             'Dude',
             'https://lapse.nerdvana.org.au/',
-            'https://vonexplaino.com/');";
+            'https://vonexplaino.com/');
+        INSERT INTO SiteChecks VALUES (
+        'https://vonexplaino.com/',
+        '2001-01-01 00:00:00',
+        'Cool, cool');
+        INSERT INTO SiteChecks VALUES (
+        'https://lapse.nerdvana.org.au/',
+        null,
+        null);";
         $this->db->getInstance()->exec($sql);
     }
     protected function tearDown(): void
@@ -98,7 +106,7 @@ final class SiteTest extends TestCase
         $this->assertEquals($one['url'], 'https://grift.com/');
     }
 
-    public function testsAddSiteSlotsIn(): void
+    public function testAddSiteSlotsIn(): void
     {
         $site = new App\Model\Site(
             $this->db
@@ -141,5 +149,36 @@ final class SiteTest extends TestCase
         $site = new App\Model\Site($this->db);
         $result = $site->nextActive('https://why.here.com');
         $this->assertSame($result, ['url' => '/']);
+    }
+
+    public function testUnchecked(): void
+    {
+        $site = new App\Model\Site($this->db);
+        $result = $site->unchecked();
+        $this->assertSame(3, count($result));
+    }
+
+    public function testActiveSetOk(): void
+    {
+        $site = new App\Model\Site($this->db);
+        $result = $site->setActive('https://no.com/', true);
+        $this->assertTrue($result);
+        $asite = $site->getSite('https://no.com/');
+        $this->assertSame($asite['active'], 1);
+        $result = $site->setActive('https://no.com/', false);
+        $this->assertTrue($result);
+        $asite = $site->getSite('https://no.com/');
+        $this->assertSame($asite['active'], '');
+    }
+    
+    public function testAllNoDb()
+    {   
+        $site = new App\Model\Site($this->db);
+        $query = $this->db->getInstance()->prepare('DELETE FROM Sites');
+        $query->execute();
+        $result = $site->all();
+        $this->assertSame([], $result);
+
+        
     }
 }

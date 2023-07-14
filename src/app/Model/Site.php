@@ -36,10 +36,7 @@ class Site
     {
         // fetch it from the DB
         $query = $this->db->prepare('SELECT * from Sites WHERE active = 1 ORDER BY RANDOM() LIMIT 1');
-        if ($query->execute()) {
-            return $query->fetch();
-        }
-        return ['url' => '/'];
+        return ($query->execute() ? $query->fetch() : ['url' => '/']);
     }
 
     public function previousActive(string $referrer): array
@@ -69,47 +66,32 @@ class Site
     public function all()
     {
         $query = $this->db->prepare('SELECT * FROM Sites');
-        if ($query->execute()) {
-            return $query->fetchAll();
-        }
-        return [];
+        return ($query->execute() ? $query->fetchAll() : []);
     }
 
     public function getActiveSitesWithProfiles(): array
     {
         $query = $this->db->prepare('SELECT * FROM Sites WHERE active = 1 AND profile IS NOT NULL ORDER BY timestamp DESC');
-        if ($query->execute()) {
-            return $query->fetchAll();
-        }
-        return [];
+        return ($query->execute() ? $query->fetchAll() : []);
     }
 
     public function setActive(String $url, bool $active)
     {
         $query = $this->db->prepare('UPDATE Sites SET active = :active WHERE url = :url');
-        if ($query->execute([$active, $url])) {
-            return true;
-        }
-        return false;
+        return $query->execute([$active, $url]);
     }
 
     public function setProfile(String $url, $card)
     {
         $query = $this->db->prepare('UPDATE Sites SET profile = :profile WHERE url = :url');
         $profile = empty($card) ? null : json_encode($card, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-        if ($query->execute([$profile, $url])) {
-            return true;
-        }
-        return false;
+        return $query->execute([$profile, $url]);
     }
 
     public function unchecked()
     {
         $query = $this->db->prepare('SELECT s.* FROM Sites s LEFT OUTER JOIN SiteChecks sc ON sc.url = s.url WHERE sc.datetime IS NULL');
-        if ($query->execute()) {
-            return $query->fetchAll();
-        }
-        return [];
+        return ($query->execute() ? $query->fetchAll() : [] );
     }
 
     protected function addSite(String $url)

@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="/opt/indieweb/tests/phpunit.xml" tests="8" assertions="19" errors="0" failures="0" skipped="0" time="1.861277">
-    <testsuite name="unit" tests="8" assertions="19" errors="0" failures="0" skipped="0" time="1.861277">
-      <testsuite name="SiteTest" file="/opt/indieweb/tests/app/Model/SiteTest.php" tests="8" assertions="19" errors="0" failures="0" skipped="0" time="1.861277">
-        <testcase name="testRandomGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="64" class="SiteTest" classname="SiteTest" assertions="1" time="1.359138"/>
-        <testcase name="testPreviousGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="72" class="SiteTest" classname="SiteTest" assertions="3" time="0.106358"/>
-        <testcase name="testNextGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="84" class="SiteTest" classname="SiteTest" assertions="7" time="0.029170"/>
-        <testcase name="testsAddSiteSlotsIn" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="101" class="SiteTest" classname="SiteTest" assertions="4" time="0.350293"/>
-        <testcase name="testNonexistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="118" class="SiteTest" classname="SiteTest" assertions="1" time="0.003200"/>
-        <testcase name="testExistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="125" class="SiteTest" classname="SiteTest" assertions="1" time="0.004590"/>
-        <testcase name="testNonexistantPrevious" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="132" class="SiteTest" classname="SiteTest" assertions="1" time="0.004218"/>
-        <testcase name="testNonexistantNext" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="139" class="SiteTest" classname="SiteTest" assertions="1" time="0.004310"/>
+  <testsuite name="/opt/indieweb/tests/phpunit.xml" tests="11" assertions="25" errors="0" failures="0" skipped="0" time="2.070951">
+    <testsuite name="unit" tests="11" assertions="25" errors="0" failures="0" skipped="0" time="2.070951">
+      <testsuite name="SiteTest" file="/opt/indieweb/tests/app/Model/SiteTest.php" tests="11" assertions="25" errors="0" failures="0" skipped="0" time="2.070951">
+        <testcase name="testRandomGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="72" class="SiteTest" classname="SiteTest" assertions="1" time="1.354486"/>
+        <testcase name="testPreviousGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="80" class="SiteTest" classname="SiteTest" assertions="3" time="0.040952"/>
+        <testcase name="testNextGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="92" class="SiteTest" classname="SiteTest" assertions="7" time="0.029512"/>
+        <testcase name="testAddSiteSlotsIn" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="109" class="SiteTest" classname="SiteTest" assertions="4" time="0.290481"/>
+        <testcase name="testNonexistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="126" class="SiteTest" classname="SiteTest" assertions="1" time="0.004196"/>
+        <testcase name="testExistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="133" class="SiteTest" classname="SiteTest" assertions="1" time="0.004029"/>
+        <testcase name="testNonexistantPrevious" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="140" class="SiteTest" classname="SiteTest" assertions="1" time="0.005364"/>
+        <testcase name="testNonexistantNext" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="147" class="SiteTest" classname="SiteTest" assertions="1" time="0.005481"/>
+        <testcase name="testUnchecked" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="154" class="SiteTest" classname="SiteTest" assertions="1" time="0.003608"/>
+        <testcase name="testActiveSetOk" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="161" class="SiteTest" classname="SiteTest" assertions="4" time="0.253821"/>
+        <testcase name="testAllNoDb" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="174" class="SiteTest" classname="SiteTest" assertions="1" time="0.079023"/>
       </testsuite>
     </testsuite>
   </testsuite>
