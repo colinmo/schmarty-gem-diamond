@@ -136,12 +136,29 @@ final class LinksCheckTest extends TestCase
         $this->assertEquals($o->getErrors(), ["Error fetching URL. I refuse to talk"]);
     }
 
-    public function testRequestNot200(): void
+    public function testRequest201(): void
     {
         
         global $handlerStack;
         $mock = new MockHandler([
             new Response(201, ['Content-Length' => 20], '<html><head></head><body><p>Permission denied</p></body></html>'),
+        ]);
+        $handlerStack = HandlerStack::create($mock);
+
+        $o = new LinksCheckMock(
+            '1',
+            array_merge([\Config::$base], \Config::$allowedLinkDomains),
+            'bob/dosomething'
+        );
+        $this->assertEquals($o->getErrors(), ["URL returned status code 201"]);
+    }
+
+    public function testRequest401(): void
+    {
+        
+        global $handlerStack;
+        $mock = new MockHandler([
+            new Response(401, ['Content-Length' => 20], '<html><head></head><body><p>Permission denied</p></body></html>'),
         ]);
         $handlerStack = HandlerStack::create($mock);
 
