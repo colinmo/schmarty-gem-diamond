@@ -4,3 +4,5 @@ vendor
 html-coverage
 testdb.sqlite3
 clover.xml
+tests/junit.xml
+tests/testdox.html
