@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="/opt/indieweb/tests/phpunit.xml" tests="20" assertions="34" errors="0" failures="0" skipped="0" time="3.326105">
-    <testsuite name="unit" tests="20" assertions="34" errors="0" failures="0" skipped="0" time="3.326105">
-      <testsuite name="SiteCheckTest" file="/opt/indieweb/tests/app/Model/SiteCheckTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="1.257721">
-        <testcase name="testSiteChecksExists" file="/opt/indieweb/tests/app/Model/SiteCheckTest.php" line="81" class="SiteCheckTest" classname="SiteCheckTest" assertions="1" time="1.226439"/>
-        <testcase name="testSiteCheckNoErrors" file="/opt/indieweb/tests/app/Model/SiteCheckTest.php" line="90" class="SiteCheckTest" classname="SiteCheckTest" assertions="1" time="0.031282"/>
+  <testsuite name="/opt/indieweb/tests/phpunit.xml" tests="29" assertions="46" errors="0" failures="0" skipped="0" time="3.411246">
+    <testsuite name="unit" tests="29" assertions="46" errors="0" failures="0" skipped="0" time="3.411246">
+      <testsuite name="SiteCheckTest" file="/opt/indieweb/tests/app/Model/SiteCheckTest.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="1.293924">
+        <testcase name="testSiteChecksExists" file="/opt/indieweb/tests/app/Model/SiteCheckTest.php" line="81" class="SiteCheckTest" classname="SiteCheckTest" assertions="1" time="1.271025"/>
+        <testcase name="testSiteCheckNoErrors" file="/opt/indieweb/tests/app/Model/SiteCheckTest.php" line="90" class="SiteCheckTest" classname="SiteCheckTest" assertions="1" time="0.022899"/>
       </testsuite>
-      <testsuite name="SiteTest" file="/opt/indieweb/tests/app/Model/SiteTest.php" tests="11" assertions="25" errors="0" failures="0" skipped="0" time="0.954363">
-        <testcase name="testRandomGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="72" class="SiteTest" classname="SiteTest" assertions="1" time="0.204456"/>
-        <testcase name="testPreviousGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="80" class="SiteTest" classname="SiteTest" assertions="3" time="0.067542"/>
-        <testcase name="testNextGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="92" class="SiteTest" classname="SiteTest" assertions="7" time="0.028855"/>
-        <testcase name="testAddSiteSlotsIn" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="109" class="SiteTest" classname="SiteTest" assertions="4" time="0.259250"/>
-        <testcase name="testNonexistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="126" class="SiteTest" classname="SiteTest" assertions="1" time="0.004131"/>
-        <testcase name="testExistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="133" class="SiteTest" classname="SiteTest" assertions="1" time="0.004131"/>
-        <testcase name="testNonexistantPrevious" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="140" class="SiteTest" classname="SiteTest" assertions="1" time="0.003813"/>
-        <testcase name="testNonexistantNext" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="147" class="SiteTest" classname="SiteTest" assertions="1" time="0.004220"/>
-        <testcase name="testUnchecked" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="154" class="SiteTest" classname="SiteTest" assertions="1" time="0.004911"/>
-        <testcase name="testActiveSetOk" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="161" class="SiteTest" classname="SiteTest" assertions="4" time="0.227769"/>
-        <testcase name="testAllNoDb" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="174" class="SiteTest" classname="SiteTest" assertions="1" time="0.145284"/>
+      <testsuite name="SiteTest" file="/opt/indieweb/tests/app/Model/SiteTest.php" tests="11" assertions="25" errors="0" failures="0" skipped="0" time="0.834730">
+        <testcase name="testRandomGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="72" class="SiteTest" classname="SiteTest" assertions="1" time="0.200138"/>
+        <testcase name="testPreviousGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="80" class="SiteTest" classname="SiteTest" assertions="3" time="0.042376"/>
+        <testcase name="testNextGetsResult" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="92" class="SiteTest" classname="SiteTest" assertions="7" time="0.026729"/>
+        <testcase name="testAddSiteSlotsIn" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="109" class="SiteTest" classname="SiteTest" assertions="4" time="0.208215"/>
+        <testcase name="testNonexistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="126" class="SiteTest" classname="SiteTest" assertions="1" time="0.004502"/>
+        <testcase name="testExistantSite" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="133" class="SiteTest" classname="SiteTest" assertions="1" time="0.003908"/>
+        <testcase name="testNonexistantPrevious" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="140" class="SiteTest" classname="SiteTest" assertions="1" time="0.004206"/>
+        <testcase name="testNonexistantNext" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="147" class="SiteTest" classname="SiteTest" assertions="1" time="0.004669"/>
+        <testcase name="testUnchecked" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="154" class="SiteTest" classname="SiteTest" assertions="1" time="0.005802"/>
+        <testcase name="testActiveSetOk" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="161" class="SiteTest" classname="SiteTest" assertions="4" time="0.212257"/>
+        <testcase name="testAllNoDb" file="/opt/indieweb/tests/app/Model/SiteTest.php" line="174" class="SiteTest" classname="SiteTest" assertions="1" time="0.121928"/>
       </testsuite>
-      <testsuite name="LinksCheckTest" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" tests="7" assertions="7" errors="0" failures="0" skipped="0" time="1.114022">
-        <testcase name="testGoodLink" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="89" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.858483"/>
-        <testcase name="testConnectException" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="105" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.092560"/>
-        <testcase name="testRequestException" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="122" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.039403"/>
-        <testcase name="testRequest201" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="139" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.002271"/>
-        <testcase name="testRequest401" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="156" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.110355"/>
-        <testcase name="testRequestNoLinks" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="173" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.002915"/>
-        <testcase name="testRequestWeirdLinks" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="190" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.008035"/>
+      <testsuite name="LinksCheckTest" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" tests="11" assertions="13" errors="0" failures="0" skipped="0" time="1.201754">
+        <testcase name="testGoodLink" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="89" class="LinksCheckTest" classname="LinksCheckTest" assertions="2" time="0.848657"/>
+        <testcase name="testOldGoodLink" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="106" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.003047"/>
+        <testcase name="testWeirdLink" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="126" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.003336"/>
+        <testcase name="testGoodLinkMultiple" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="146" class="LinksCheckTest" classname="LinksCheckTest" assertions="2" time="0.003267"/>
+        <testcase name="testConnectException" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="163" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.099502"/>
+        <testcase name="testRequestException" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="180" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.049629"/>
+        <testcase name="testRequest201" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="197" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.002338"/>
+        <testcase name="testRequest401" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="214" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.084546"/>
+        <testcase name="testRequestNoLinks" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="231" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.002877"/>
+        <testcase name="testRequestWeirdLinks" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="248" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.003904"/>
+        <testcase name="testHttpClient" file="/opt/indieweb/tests/app/Util/LinksCheckTest.php" line="265" class="LinksCheckTest" classname="LinksCheckTest" assertions="1" time="0.100651"/>
+      </testsuite>
+      <testsuite name="ProfileCheckTest" file="/opt/indieweb/tests/app/Util/ProfileCheckTest.php" tests="5" assertions="6" errors="0" failures="0" skipped="0" time="0.080837">
+        <testcase name="testConnectException" file="/opt/indieweb/tests/app/Util/ProfileCheckTest.php" line="88" class="ProfileCheckTest" classname="ProfileCheckTest" assertions="1" time="0.025170"/>
+        <testcase name="testRequestException" file="/opt/indieweb/tests/app/Util/ProfileCheckTest.php" line="104" class="ProfileCheckTest" classname="ProfileCheckTest" assertions="1" time="0.002647"/>
+        <testcase name="testRequest201" file="/opt/indieweb/tests/app/Util/ProfileCheckTest.php" line="119" class="ProfileCheckTest" classname="ProfileCheckTest" assertions="1" time="0.002269"/>
+        <testcase name="testUninitialisedCard" file="/opt/indieweb/tests/app/Util/ProfileCheckTest.php" line="135" class="ProfileCheckTest" classname="ProfileCheckTest" assertions="1" time="0.046814"/>
+        <testcase name="testOKProfileCard" file="/opt/indieweb/tests/app/Util/ProfileCheckTest.php" line="149" class="ProfileCheckTest" classname="ProfileCheckTest" assertions="2" time="0.003937"/>
       </testsuite>
     </testsuite>
   </testsuite>

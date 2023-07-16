@@ -100,11 +100,69 @@ final class LinksCheckTest extends TestCase
             'bob/dosomething'
         );
         $this->assertEquals($o->getErrors(), []);
+        $this->assertTrue($o->isActive());
+    }
+
+    public function testOldGoodLink(): void
+    {
+        global $handlerStack;
+        $mock = new MockHandler([
+            new Response(200, ['Content-Length' => 20], '<html><head></head><body><p><a href="http://localhost:89/do/previous">Previous</a>||<a href="http://localhost:89/do/next">Next</a></p></body></html>'),
+        ]);
+        $handlerStack = HandlerStack::create($mock);
+
+        $o = new LinksCheckMock(
+            '1',
+            array_merge([\Config::$base], \Config::$allowedLinkDomains),
+            'bob/dosomething'
+        );
+        $this->assertEquals($o->getErrors(), [
+            'Old emoji-style link: /do/previous',
+            'Old emoji-style link: /do/next',
+            'Missing one or both links to http://localhost:89/next or http://localhost:89/previous'
+        ]);
+    }
+
+    public function testWeirdLink(): void
+    {
+        global $handlerStack;
+        $mock = new MockHandler([
+            new Response(200, ['Content-Length' => 20], '<html><head></head><body><p><a href="http://localhost:89/do/previous">Previous</a>||<a href="http://localhost:89/Steve">Steve</a></p></body></html>'),
+        ]);
+        $handlerStack = HandlerStack::create($mock);
+
+        $o = new LinksCheckMock(
+            '1',
+            array_merge([\Config::$base], \Config::$allowedLinkDomains),
+            'bob/dosomething'
+        );
+        $this->assertEquals($o->getErrors(), [
+            'Old emoji-style link: /do/previous',
+            'Missing one or both links to http://localhost:89/next or http://localhost:89/previous',
+            'Found unknown link: http://localhost:89/Steve'
+        ]);
+    }
+
+    public function testGoodLinkMultiple(): void
+    {
+        global $handlerStack;
+        $mock = new MockHandler([
+            new Response(200, ['Content-Length' => 20], '<html><head></head><body><p><a href="/">Dude</a><a href="http://localhost:89/">Sweet</a><a href="http://localhost:89/previous">Previous</a>||<a href="http://localhost:89/next">Next</a></p></body></html>'),
+        ]);
+        $handlerStack = HandlerStack::create($mock);
+
+        $o = new LinksCheckMock(
+            '1',
+            array_merge([\Config::$base], \Config::$allowedLinkDomains),
+            'bob/dosomething'
+        );
+        $this->assertEquals($o->getErrors(), []);
+        $this->assertTrue($o->isActive());
     }
 
     public function testConnectException(): void
     {
-        
+
         global $handlerStack;
         $mock = new MockHandler([
             new ConnectException('Connection refused', new Request('GET', 'test'))
@@ -121,7 +179,7 @@ final class LinksCheckTest extends TestCase
 
     public function testRequestException(): void
     {
-        
+
         global $handlerStack;
         $mock = new MockHandler([
             new RequestException('I refuse to talk', new Request('GET', 'test'))
@@ -138,7 +196,7 @@ final class LinksCheckTest extends TestCase
 
     public function testRequest201(): void
     {
-        
+
         global $handlerStack;
         $mock = new MockHandler([
             new Response(201, ['Content-Length' => 20], '<html><head></head><body><p>Permission denied</p></body></html>'),
@@ -155,7 +213,7 @@ final class LinksCheckTest extends TestCase
 
     public function testRequest401(): void
     {
-        
+
         global $handlerStack;
         $mock = new MockHandler([
             new Response(401, ['Content-Length' => 20], '<html><head></head><body><p>Permission denied</p></body></html>'),
@@ -172,7 +230,7 @@ final class LinksCheckTest extends TestCase
 
     public function testRequestNoLinks(): void
     {
-        
+
         global $handlerStack;
         $mock = new MockHandler([
             new Response(200, ['Content-Length' => 20], 'Steve? STEVE!'),
@@ -189,7 +247,7 @@ final class LinksCheckTest extends TestCase
 
     public function testRequestWeirdLinks(): void
     {
-        
+
         global $handlerStack;
         $mock = new MockHandler([
             new Response(200, ['Content-Length' => 20], '<html><head></head><body><a name="steve"></a>, <a href="">Mike</a></body></html>'),
@@ -203,11 +261,16 @@ final class LinksCheckTest extends TestCase
         );
         $this->assertEquals($o->getErrors(), ["Missing one or both links to http://localhost:89/next or http://localhost:89/previous"]);
     }
+
+    public function testHttpClient(): void
+    {
+        $this->assertEquals(get_class(LinksCheck::makeHTTPClient("bob")), "GuzzleHttp\Client");
+    }
 }
 
 class LinksCheckMock extends LinksCheck
 {
-    protected function makeHTTPClient(string $userAgent)
+    public static function makeHTTPClient(string $userAgent): HttpClient
     {
         global $handlerStack;
         return new HttpClient(['handler' => $handlerStack]);

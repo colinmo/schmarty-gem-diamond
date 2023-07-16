@@ -1,0 +1,6 @@
+{
+    "intelephense.environment.includePaths": [
+        "E:/Laboratory/IndieWebring/gem-diamond/src/vendor",
+        "E:/Laboratory/IndieWebring/gem-diamond/src/vendor/**"
+    ]
+}

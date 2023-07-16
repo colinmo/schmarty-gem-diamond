@@ -136,7 +136,7 @@ class LinksCheck
         ];
     }
 
-    protected function makeHTTPClient(string $userAgent)
+    public static function makeHTTPClient(string $userAgent): HttpClient
     {
         return new HttpClient([
             'headers' => ['User-Agent' => $userAgent],
