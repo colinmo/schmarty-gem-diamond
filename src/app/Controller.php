@@ -13,7 +13,11 @@ class Controller
     private \App\Model\Site $site;
     private \App\Model\SiteCheck $siteCheck;
 
-    public function __construct(ResponseInterface $response, \League\Plates\Engine $templates, \App\Model\Site $site, \App\Model\SiteCheck $siteCheck)
+    public function __construct(
+        ResponseInterface $response,
+        \League\Plates\Engine $templates,
+        \App\Model\Site $site,
+        \App\Model\SiteCheck $siteCheck)
     {
         $this->response = $response;
         $this->templates = $templates;
