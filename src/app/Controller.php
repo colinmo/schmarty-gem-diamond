@@ -5,20 +5,14 @@ namespace App;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Controller
-{
+class Controller {
 
     private ResponseInterface $response;
     private \League\Plates\Engine $templates;
     private \App\Model\Site $site;
     private \App\Model\SiteCheck $siteCheck;
 
-    public function __construct(
-        ResponseInterface $response,
-        \League\Plates\Engine $templates,
-        \App\Model\Site $site,
-        \App\Model\SiteCheck $siteCheck)
-    {
+  public function __construct(ResponseInterface $response, \League\Plates\Engine $templates, \App\Model\Site $site, \App\Model\SiteCheck $siteCheck) {
         $this->response = $response;
         $this->templates = $templates;
         $this->site = $site;
@@ -26,18 +20,15 @@ class Controller
         $this->templates->addData(['hostname' => $_SERVER['SERVER_NAME']]);
     }
 
-    public function index(ServerRequestInterface $request): ResponseInterface
-    {
+  public function index(ServerRequestInterface $request): ResponseInterface {
         return $this->render('index')->withStatus(200);
     }
 
-    public function terms(ServerRequestInterface $request): ResponseInterface
-    {
+  public function terms(ServerRequestInterface $request): ResponseInterface {
         return $this->render('terms')->withStatus(200);
     }
 
-    public function dashboard(ServerRequestInterface $request): ResponseInterface
-    {
+  public function dashboard(ServerRequestInterface $request): ResponseInterface {
         $me = $_SESSION['token']['me'];
         $site = $this->site->getSite($me, true);
         $site['profile'] = $this->profileFromCard($me, $site['profile']);
@@ -49,8 +40,7 @@ class Controller
         return $this->render('dashboard')->withStatus(200);
     }
 
-    public function checkLinks(ServerRequestInterface $request): ResponseInterface
-    {
+  public function checkLinks(ServerRequestInterface $request): ResponseInterface {
         $flash = $request->getAttribute('flash');
         $me = $_SESSION['token']['me'];
         $site = $this->site->getSite($me, true);
@@ -67,8 +57,7 @@ class Controller
         return $this->response->withHeader('Location', '/dashboard')->withStatus(302);
     }
 
-    public function checkProfile(ServerRequestInterface $request): ResponseInterface
-    {
+  public function checkProfile(ServerRequestInterface $request): ResponseInterface {
         $flash = $request->getAttribute('flash');
         $me = $_SESSION['token']['me'];
         $site = $this->site->getSite($me, true);
@@ -82,8 +71,7 @@ class Controller
         return $this->response->withHeader('Location', '/dashboard')->withStatus(302);
     }
 
-    public function removeProfile(ServerRequestInterface $request): ResponseInterface
-    {
+  public function removeProfile(ServerRequestInterface $request): ResponseInterface {
         $flash = $request->getAttribute('flash');
         $me = $_SESSION['token']['me'];
         $site = $this->site->getSite($me, true);
@@ -96,20 +84,16 @@ class Controller
         return $this->response->withHeader('Location', '/dashboard')->withStatus(302);
     }
 
-    public function directory(ServerRequestInterface $request): ResponseInterface
-    {
+  public function directory(ServerRequestInterface $request): ResponseInterface {
         $sites = $this->site->getActiveSitesWithProfiles();
         $profiles = array_map(
-            function ($site) {
-                return $this->profileFromCard($site['url'], $site['profile']);
-            },
+      function($site) { return $this->profileFromCard($site['url'],$site['profile']); },
             $sites
         );
         return $this->render('directory', ['profiles' => $profiles])->withStatus(200);
     }
 
-    public function random(ServerRequestInterface $request, array $args): ResponseInterface
-    {
+  public function random(ServerRequestInterface $request, array $args): ResponseInterface {
         // if $args['slug'] is present this is an old-style URL.
         // but we don't do anything with that knowledge so it's just a lonely comment.
 
@@ -121,6 +105,11 @@ class Controller
         return $this->response->withHeader('Location', $site['url'])->withStatus(302);
     }
 
+	/**
+	 * Use the Referer header to determine the NEXT URL to send to, by matching the
+	 * referer to the site URL
+	 * Fall back to a random site
+	 */
     public function next(ServerRequestInterface $request, array $args): ResponseInterface
     {
         if (isset($request->getHeader('referer')[0])) {
@@ -130,6 +119,11 @@ class Controller
         return $this->random($request, $args);
     }
 
+	/**
+	 * Use the Referer header to determine the PREVIOUS URL to send to, by matching the
+	 * referer to the site URL
+	 * Fall back to a random site
+	 */
     public function previous(ServerRequestInterface $request, array $args): ResponseInterface
     {
         if (isset($request->getHeader('referer')[0])) {
@@ -139,12 +133,9 @@ class Controller
         return $this->random($request, $args);
     }
 
-    protected function profileFromCard($url, $card)
-    {
+    protected function profileFromCard($url, $card){
 
-        if (empty($card)) {
-            return false;
-        }
+        if (empty($card)) { return false; }
 
         $card = json_decode($card, true);
 
@@ -155,9 +146,7 @@ class Controller
             'cute_url' => htmlspecialchars($cute_url),
             'url' => htmlspecialchars($url),
         ];
-        if (!array_key_exists('properties', $card)) {
-            return $profile;
-        }
+        if (!array_key_exists('properties', $card)) { return $profile; }
         foreach (['name', 'note', 'photo'] as $prop) {
             if (array_key_exists($prop, $card['properties'])) {
                 $val = $card['properties'][$prop][0];
@@ -166,7 +155,8 @@ class Controller
                     // `value` that's the URL we want.
                     if (array_key_exists('value', $val)) {
                         $val = $val['value'];
-                    } else {
+                    } 
+                    else {
                         // some unexpected nesting here, treat it as missing.
                         $val = false;
                     }
@@ -179,9 +169,9 @@ class Controller
         return $profile;
     }
 
-    protected function render($template, $data = [])
-    {
+    protected function render($template, $data = []) {
         $this->response->getBody()->write($this->templates->render($template, $data));
         return $this->response;
     }
+
 }

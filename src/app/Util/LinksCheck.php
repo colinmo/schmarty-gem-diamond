@@ -7,8 +7,7 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use Masterminds\HTML5;
 
-class LinksCheck
-{
+class LinksCheck {
 
     protected $errors = [];
     protected $active = false;
@@ -47,23 +46,17 @@ class LinksCheck
         foreach ($links as $link) {
 
             $hrefAttr = $link->attributes->getNamedItem('href');
-            if (!$hrefAttr) {
-                continue;
-            }
+            if (!$hrefAttr) { continue; }
 
             $href = $hrefAttr->nodeValue;
-            if (!$href) {
-                continue;
-            }
+      		if ( !$href ) { continue; }
             $matchedDomains = array_filter(
                 $allowedLinkDomains,
                 function ($siteBase) use ($href) {
                     return (substr($href, 0, strlen($siteBase)) === $siteBase);
                 }
             );
-            if (count($matchedDomains) === 0) {
-                continue;
-            }
+      if ( count($matchedDomains) === 0 ) { continue; }
 
             $path = parse_url($href, PHP_URL_PATH);
             $linksByPath[$path] = $href;
@@ -110,26 +103,22 @@ class LinksCheck
         }
     }
 
-    public function isActive()
-    {
+  public function isActive() {
         return $this->active;
     }
 
-    public function getErrors()
-    {
+  public function getErrors() {
         return $this->errors;
     }
 
-    protected function expectedLinks()
-    {
+  protected function expectedLinks () {
         return [
             'next' => '/^\/next$/',
             'previous' => '/^\/previous$/',
         ];
     }
 
-    protected function fallbackLinks()
-    {
+  protected function fallbackLinks() {
         return [
             'next' => "/^\/[^\/]+\/next$/",
             'previous' => "/^\/[^\/]+\/previous$/",

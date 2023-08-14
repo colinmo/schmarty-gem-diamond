@@ -7,8 +7,7 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use Mf2;
 
-class ProfileCheck
-{
+class ProfileCheck {
 
     protected $errors = [];
     protected $card = false;
@@ -37,13 +36,11 @@ class ProfileCheck
         $this->card = Mf2\HCard\representative($mf2, $url);
     }
 
-    public function getCard()
-    {
+  public function getCard() {
         return $this->card;
     }
 
-    public function getErrors()
-    {
+  public function getErrors() {
         return $this->errors;
     }
 

@@ -2,18 +2,15 @@
 
 namespace App\Model;
 
-class SiteCheck
-{
+class SiteCheck {
 
     private $db;
 
-    public function __construct(\App\DB $db)
-    {
+    public function __construct(\App\DB $db) {
         $this->db = $db->getInstance();
     }
 
-    public function getSiteChecks(String $url, int $max = 3)
-    {
+    public function getSiteChecks(String $url, int $max = 3) {
         // fetch it from the DB
         $query = $this->db->prepare('SELECT * from SiteChecks where url = :url ORDER BY datetime DESC LIMIT :max');
         if ($query->execute([$url, $max])) {
@@ -40,8 +37,7 @@ class SiteCheck
         return [];
     }
 
-    public function addSiteCheck(String $url, array $errors)
-    {
+    public function addSiteCheck(String $url, array $errors) {
         $query = $this->db->prepare('INSERT INTO SiteChecks (url, result) VALUES (:url, :result)');
         if ($query->execute([$url, json_encode($errors, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)])) {
             return true;
@@ -49,4 +45,5 @@ class SiteCheck
 
         return false;
     }
+
 }
