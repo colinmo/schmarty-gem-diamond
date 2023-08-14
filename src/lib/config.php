@@ -19,5 +19,5 @@ class Config
     public static $scope = 'profile';
 
     // Path to database
-    public static $dbPath = '/opt/indieweb/data/db.sqlite3';
+    public static $dbPath = __DIR__ . '/../../data/db.sqlite3';
 }

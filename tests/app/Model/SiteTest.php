@@ -11,7 +11,7 @@ final class SiteTest extends TestCase
 
     protected function setUp(): void
     {
-        $dbfile = "/opt/indieweb/tests/fixtures/testdb.sqlite3";
+        $dbfile = __DIR__ . "/../../fixtures/testdb.sqlite3";
         unlink($dbfile);
         touch($dbfile);
         $this->db = new DB($dbfile);
@@ -67,7 +67,7 @@ final class SiteTest extends TestCase
     }
     protected function tearDown(): void
     {
-        unlink("/opt/indieweb/tests/fixtures/testdb.sqlite3");
+        unlink(__DIR__ . "/../../fixtures/testdb.sqlite3");
     }
     public function testRandomGetsResult(): void
     {
