@@ -11,7 +11,7 @@ final class SiteCheckTest extends TestCase
 
     protected function setUp(): void
     {
-        $dbfile = __DIR__ . "/../tests/fixtures/testdb.sqlite3";
+        $dbfile = __DIR__ . "/../../fixtures/testdb.sqlite3";
         unlink($dbfile);
         touch($dbfile);
         $this->db = new DB($dbfile);
