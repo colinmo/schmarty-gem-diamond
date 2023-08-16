@@ -113,8 +113,8 @@ class Controller {
     public function next(ServerRequestInterface $request, array $args): ResponseInterface
     {
         if (isset($request->getHeader('referer')[0])) {
-            $site = $this->site->nextActive($request->getHeader('referer')[0]);
-            return $this->response->withHeader('Location', $site['url'])->withStatus(302);
+            $siteURL = $this->site->nextActive($request->getHeader('referer')[0]);
+            return $this->response->withHeader('Location', $siteURL)->withStatus(302);
         }
         return $this->random($request, $args);
     }
@@ -127,8 +127,8 @@ class Controller {
     public function previous(ServerRequestInterface $request, array $args): ResponseInterface
     {
         if (isset($request->getHeader('referer')[0])) {
-            $site = $this->site->previousActive($request->getHeader('referer')[0]);
-            return $this->response->withHeader('Location', $site['url'])->withStatus(302);
+            $siteURL = $this->site->previousActive($request->getHeader('referer')[0]);
+            return $this->response->withHeader('Location', $siteURL)->withStatus(302);
         }
         return $this->random($request, $args);
     }

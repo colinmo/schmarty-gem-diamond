@@ -80,30 +80,23 @@ final class SiteTest extends TestCase
     public function testPreviousGetsResult(): void
     {
 
-        $site = new App\Model\Site(
-            $this->db
-        );
+        $site = new App\Model\Site($this->db);
         $one = $site->previousActive('https://lapse.nerdvana.org.au/index.html');
-        $this->assertIsArray($one);
-        $this->assertArrayHasKey('url', $one);
-        $this->assertEquals($one['url'], 'https://grift.com/');
+        $this->assertIsString($one);
+        $this->assertEquals($one, 'https://grift.com/');
     }
 
     public function testNextGetsResult(): void
     {
-        $site = new App\Model\Site(
-            $this->db
-        );
+        $site = new App\Model\Site($this->db);
         $this->assertSame('App\Model\Site', get_class($site));
         $one = $site->nextActive('https://lapse.nerdvana.org.au/index.html');
-        $this->assertIsArray($one);
-        $this->assertArrayHasKey('url', $one);
-        $this->assertEquals($one['url'], 'https://vonexplaino.com/');
+        $this->assertIsString($one);
+        $this->assertEquals($one, 'https://vonexplaino.com/');
 
         $one = $site->nextActive('https://vonexplaino.com/bob/builder');
-        $this->assertIsArray($one);
-        $this->assertArrayHasKey('url', $one);
-        $this->assertEquals($one['url'], 'https://grift.com/');
+        $this->assertIsString($one);
+        $this->assertEquals($one, 'https://grift.com/');
     }
 
     public function testAddSiteSlotsIn(): void
@@ -121,6 +114,21 @@ final class SiteTest extends TestCase
         $this->assertSame(count($bob), 4);
         $bob = $site->all();
         $this->assertSame(count($bob), 5);
+    }
+
+    public function testDeactivateSite(): void
+    {
+        $site = new App\Model\Site($this->db);
+        $result = $site->setActive('https://lapse.nerdvana.org.au/', false);
+        $this->assertTrue($result);
+        $x = $site->getSite('https://lapse.nerdvana.org.au/');
+        $this->assertTrue(!$x['active']);
+        $this->assertEquals($x['next'], null);
+        $x = $site->getSite('https://vonexplaino.com/');
+        $this->assertEquals($x['next'], 'https://grift.com/');
+        $x = $site->getSite('https://grift.com/');
+        $this->assertEquals($x['previous'],'https://vonexplaino.com/');
+
     }
 
     public function testNonexistantSite(): void
@@ -141,14 +149,14 @@ final class SiteTest extends TestCase
     {
         $site = new App\Model\Site($this->db);
         $result = $site->previousActive('https://why.here.com');
-        $this->assertSame($result, ['url' => '/']);
+        $this->assertSame($result, '/');
     }
 
     public function testNonexistantNext(): void
     {
         $site = new App\Model\Site($this->db);
         $result = $site->nextActive('https://why.here.com');
-        $this->assertSame($result, ['url' => '/']);
+        $this->assertSame($result, '/');
     }
 
     public function testUnchecked(): void
@@ -168,7 +176,7 @@ final class SiteTest extends TestCase
         $result = $site->setActive('https://no.com/', false);
         $this->assertTrue($result);
         $asite = $site->getSite('https://no.com/');
-        $this->assertSame($asite['active'], '');
+        $this->assertTrue(!$asite['active']);
     }
     
     public function testAllNoDb()

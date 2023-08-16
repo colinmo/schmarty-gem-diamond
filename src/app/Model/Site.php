@@ -62,47 +62,47 @@ final class Site
      * Return the active site that's the previous one to the specfied referrer
      * 
      * @param string $referrer URL the previous link was clicked on
-     * @return array 
+     * @return string 
      * @throws PDOException 
      */
-    public function previousActive(string $referrer): array
+    public function previousActive(string $referrer): string
     {
-        $query = $this->db->prepare("SELECT previous as url from Sites WHERE :referrer like url||'%' AND active = 1 ORDER BY length(url) LIMIT 1");
+        $query = $this->db->prepare("SELECT previous from Sites WHERE :referrer like url||'%' AND active = 1 ORDER BY length(url) LIMIT 1");
         if ($query->execute([$referrer])) {
             $return = $query->fetch();
             if ($return) {
-                return $return;
+                return $return['previous'];
             }
         }
-        return ['url' => '/'];
+        return '/';
     }
 
     /**
      * Return the active site that's the next one to the specfied referrer
      * 
      * @param string $referrer URL the next link was clicked on
-     * @return array 
+     * @return string 
      * @throws PDOException 
      */
-    public function nextActive(string $referrer): mixed
+    public function nextActive(string $referrer): string
     {
-        $query = $this->db->prepare("SELECT next as url from Sites WHERE :referrer like url||'%' AND active = 1 ORDER BY length(url) LIMIT 1");
+        $query = $this->db->prepare("SELECT next from Sites WHERE :referrer like url||'%' AND active = 1 ORDER BY length(url) LIMIT 1");
         if ($query->execute([$referrer])) {
             $return = $query->fetch();
             if ($return) {
-                return $return;
+                return $return['next'];
             }
         }
-        return ['url' => '/'];
+        return '/';
     }
 
     /**
      * Return ALL Sites in the Sites table
      * 
-     * @return array|false 
+     * @return array
      * @throws PDOException 
      */
-    public function all(): array|false
+    public function all(): array
     {
         $query = $this->db->prepare('SELECT * FROM Sites');
         return ($query->execute() ? $query->fetchAll() : []);
@@ -114,10 +114,35 @@ final class Site
         return ($query->execute() ? $query->fetchAll() : []);
     }
 
+    // Updated to remove from ring if inactive, or add back to ring if active
     public function setActive(String $url, bool $active)
     {
-        $query = $this->db->prepare('UPDATE Sites SET active = :active WHERE url = :url');
-        return $query->execute([$active, $url]);
+        $existing = $this->getSite($url, false);
+        if (!!$existing['active'] == !!$active) {
+            // No change
+            return true;
+        }
+        $this->db->beginTransaction();
+        if ($active) {
+            // Add back to ring
+            $target = $this->randomActive();
+            $query = $this->db->prepare('UPDATE Sites SET active = :active, previous = :prev, next = :next WHERE url = :url');
+            $query->execute([true, $target['url'], $target['next'], $url]);
+            $query = $this->db->prepare('UPDATE sites SET next = :url WHERE url = :orig');
+            $query->execute([$url, $target['url']]);
+            $query = $this->db->prepare('UPDATE sites SET previous = :url WHERE url = :orig');
+            $query->execute([$url, $target['next']]);
+        } else {
+            // Remove from ring
+            $query = $this->db->prepare('UPDATE Sites SET active = :active, previous = :prev, next = :next WHERE url = :url');
+            $ok = $query->execute([false, '', '', $url]);
+            $query = $this->db->prepare('UPDATE sites SET next = :url WHERE url = :orig');
+            $query->execute([$existing['next'], $existing['previous']]);
+            $query = $this->db->prepare('UPDATE sites SET previous = :url WHERE url = :orig');
+            $query->execute([$existing['previous'], $existing['next']]);
+        }
+        
+        return $this->db->commit();
     }
 
     public function setProfile(String $url, $card)
